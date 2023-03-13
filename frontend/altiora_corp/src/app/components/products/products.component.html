@@ -1,0 +1,71 @@
+<div class="modal fade" id="newProduct" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Producto</h1>
+        <button #closeModal type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="regFormProduct" name="form">
+          <div class="mb-3">
+            <label for="ipt_id" class="form-label" [hidden]="true">Id</label>
+            <input type="text" class="form-control" id="ipt_id" placeholder="" formControlName="id"
+                   maxlength="45" [disabled]="true" [hidden]="true">
+          </div>
+          <div class="mb-3">
+            <label for="ipt_code" class="form-label">Code</label>
+            <input type="number" class="form-control" id="ipt_code" placeholder="" formControlName="code"
+                   maxlength="45">
+          </div>
+          <div class="mb-3">
+            <label for="ipt_name" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="ipt_name" placeholder="" formControlName="name"
+                   maxlength="45">
+          </div>
+          <div class="mb-3">
+            <label for="ipt_unitprice" class="form-label">Precio unitario</label>
+            <input type="number" class="form-control" id="ipt_unitprice" placeholder="" formControlName="unitPrice"
+                   maxlength="45">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" (click)="saveProduct()"> Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-3">
+  <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#newProduct"
+  > Nuevo Producto
+  </button>
+
+  <table class="table table-bordered border-primary table-sm mt-3">
+    <thead class="table-dark">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Código</th>
+      <th scope="col">Nombre</th>
+      <th scope="col">Precio</th>
+      <th scope="col">Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let pdt of products">
+      <td> {{pdt.id}} </td>
+      <td> {{pdt.code}} </td>
+      <td> {{pdt.name}} </td>
+      <td> {{pdt.unitPrice}} </td>
+      <td>
+        <button class="btn btn-warning btn-sm" style="margin-right: 1rem" data-bs-toggle="modal"
+                data-bs-target="#newProduct" (click)="updateProduct(pdt)"> Editar
+        </button>
+        <button class="btn btn-danger btn-sm" (click)="deleteProduct(pdt)"> Eliminar</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+</div>

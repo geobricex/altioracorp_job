@@ -1,0 +1,119 @@
+<div class="modal fade" id="newOrder" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Nueva orden</h1>
+        <button #closeModal type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="regFormOrder" name="form">
+          <div class="mb-3">
+            <div class="mb-3">
+              <label for="ipt_id" class="form-label" [hidden]="true">Id</label>
+              <input type="text" class="form-control" id="ipt_id" [hidden]="true" placeholder="" formControlName="id"
+                     maxlength="45">
+            </div>
+            <label for="slt_maestro" class="form-label">Cliente</label>
+            <select id="slt_maestro" class="form-select" aria-label="Default select example"
+                    formControlName="idmaestro" [(ngModel)]="selectedOption">
+              <option selected>----</option>
+              <option *ngFor="let cts of customers"
+                      (click)="itemSelected(cts)"> {{cts.name + ' ' + cts.lastname + ' - DNI: ' + cts.dni}} </option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Seleccione productos</label>
+            <mat-selection-list id="selectionListId" #selectionList>
+              <mat-list-option *ngFor="let pds of products" [value]="pds">
+                {{pds.code}} - {{pds.name}}  - ${{pds.unitPrice}}
+              </mat-list-option>
+            </mat-selection-list>
+
+            <!--            <mat-form-field>-->
+            <!--              <mat-label>Selecciona varios elementos</mat-label>-->
+            <!--              <mat-select multiple [(ngModel)]="selectedItems">-->
+            <!--                <mat-option *ngFor="let item of items" [value]="item">{{ item }}</mat-option>-->
+            <!--              </mat-select>-->
+            <!--            </mat-form-field>-->
+
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" (click)="prepareOrders(selectionList)">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-3">
+  <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#newOrder"
+  > Nuevo Orden
+  </button>
+
+  <table class="table table-bordered border-primary table-sm mt-3">
+    <thead class="table-dark">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Cliente</th>
+      <th scope="col">Fecha</th>
+      <th scope="col">Acciones</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let ords of orders">
+      <td> {{ords.id}} </td>
+      <td> {{ords.customer.name}} {{ords.customer.lastname}}</td>
+      <td> {{ords.date}} </td>
+
+      <td>
+        <button class="btn btn-info btn-sm" style="margin-right: 1rem" data-bs-toggle="modal"
+                data-bs-target="#detailsOrder" (click)="chargeDetails(ords)"> Detalle
+        </button>
+        <button class="btn btn-danger btn-sm" (click)="deleteOrder(ords)"> Eliminar</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<div class="modal fade" id="detailsOrder" tabindex="-1" aria-labelledby="exampleModalLabelD" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="iddetailsOrder">Detalles de la orden</h1>
+        <button #closeModal type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="regFormDetailOrder" name="form">
+          <div class="mb-3">
+            <div class="mb-3">
+              <label for="ipt_iddetails" class="form-label">Código de orden</label>
+              <input type="text" class="form-control" id="ipt_iddetails" placeholder="" formControlName="idDetails"
+                     maxlength="45">
+            </div>
+            <label for="ipt_custo" class="form-label">Cliente</label>
+            <input type="text" class="form-control" id="ipt_custo" placeholder="" formControlName="customerDetails"
+                   maxlength="45">
+          </div>
+          <div class="mb-3">
+            <label for="ipt_date" class="form-label">Fecha</label>
+            <input type="text" class="form-control" id="ipt_date" placeholder="" formControlName="dateDetails"
+                      maxlength="45">
+          </div>
+          <div class="mb-3">
+            <label for="ipt_product" class="form-label">Productos</label>
+            <textarea type="text" class="form-control" id="ipt_product" placeholder="" formControlName="productDetails"
+                   maxlength="45" ows="5"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
