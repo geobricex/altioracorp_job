@@ -15,10 +15,11 @@
             </div>
             <label for="slt_maestro" class="form-label">Cliente</label>
             <select id="slt_maestro" class="form-select" aria-label="Default select example"
-                    formControlName="idmaestro" [(ngModel)]="selectedOption">
+                    [(ngModel)]="selectedOption">
               <option selected>----</option>
               <option *ngFor="let cts of customers"
-                      (click)="itemSelected(cts)"> {{cts.name + ' ' + cts.lastname + ' - DNI: ' + cts.dni}} </option>
+                      [ngValue]="cts"
+                      (click)=itemSelected(cts)> {{cts.name + ' ' + cts.lastname + ' - DNI: ' + cts.dni}} </option>
             </select>
           </div>
           <div class="mb-3">
@@ -102,12 +103,12 @@
           <div class="mb-3">
             <label for="ipt_date" class="form-label">Fecha</label>
             <input type="text" class="form-control" id="ipt_date" placeholder="" formControlName="dateDetails"
-                      maxlength="45">
+                   maxlength="45">
           </div>
           <div class="mb-3">
             <label for="ipt_product" class="form-label">Productos</label>
             <textarea type="text" class="form-control" id="ipt_product" placeholder="" formControlName="productDetails"
-                   maxlength="45" ows="5"></textarea>
+                      maxlength="45" ows="5"></textarea>
           </div>
         </form>
       </div>

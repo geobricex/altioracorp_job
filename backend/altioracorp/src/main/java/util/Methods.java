@@ -5,10 +5,13 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.modelmapper.ModelMapper;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class Methods {
 
@@ -104,5 +107,49 @@ public final class Methods {
         return dto;
     }
 
+    public static Boolean verifyMaxLength(String text, int length) {
+        return (text.length() <= length);
+    }
 
+    public static int wordsCount(String text, String spaces) {
+        int contador = 1, pos;//**METODO PIRATEADO XD
+        text = text.trim(); //eliminar los posibles espacios en blanco al principio y al final
+        if (text.isEmpty()) { //si la cadena está vacía
+            contador = 0;
+        } else {
+            pos = text.indexOf(spaces); //se busca el primer espacio en blanco
+            while (pos != -1) {   //mientras que se encuentre un espacio en blanco
+                contador++;    //se cuenta una palabra
+                pos = text.indexOf(spaces, pos + spaces.length()); //se busca el siguiente espacio en blanco
+            }                                    //a continuación del actual
+        }
+        return contador;
+    }
+
+    public static Boolean verifyString(String text, String unEqString, int length) {
+        if (!text.equals(unEqString)) {
+            // -1 para indicar que no existe un maxlength
+            if (length > -1) {
+                return (text.length() <= length);
+            } else {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static Boolean testregex(String pattern, String text) {
+        Pattern pat = Pattern.compile(pattern);
+        Matcher mat = pat.matcher(text);
+        return mat.matches();
+    }
+
+    public static boolean isInteger(String number) {
+        try {
+            int num = Integer.parseInt(number);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

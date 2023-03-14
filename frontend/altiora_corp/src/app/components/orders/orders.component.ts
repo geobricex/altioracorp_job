@@ -98,13 +98,14 @@ export class OrdersComponent implements OnInit {
 
   itemSelected(customers_: Customers) {
     this.customer = customers_;
+    console.log(customers_);
   }
 
 
   prepareOrders(list: MatSelectionList) {
     let listMultiple = this.selectionList.selectedOptions.selected.map(item => item.value)
     if (listMultiple.length > 0) {
-
+      console.log(this.selectedOption)
       this.regFormOrder = this.formBuilder.group(
         {
           id: 0,
@@ -167,6 +168,7 @@ export class OrdersComponent implements OnInit {
       'Order': order_,
       'OrdersDetails': orderDetail_
     }
+    console.log(jsonOrder);
     return this._http.post(this.globalUri, JSON.stringify(jsonOrder), {headers: headers});
   }
 
@@ -209,7 +211,7 @@ export class OrdersComponent implements OnInit {
     console.log(order_);
     let allProducts = "";
     for (let i = 0; i < order_.ordersDetails.length; i++) {
-      allProducts +=  order_.ordersDetails[i].products.code + '-' + order_.ordersDetails[i].products.name + ' / ';
+      allProducts += order_.ordersDetails[i].products.code + '-' + order_.ordersDetails[i].products.name + ' / ';
     }
 
     this.regFormDetailOrder = this.formBuilder.group(

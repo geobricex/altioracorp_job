@@ -6,6 +6,7 @@ import com.altioracorp.altioracorp.repository.ProductRepository;
 import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import util.Methods;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -22,21 +23,26 @@ public class ProductsService {
 
     public String[] saveProducts(Product product) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
-        JsonObject jsonObject = new JsonObject();
-        product.setState("A");
-        product = productRepository.save(product);
+        if (Methods.verifyMaxLength(product.getName(), 50)) {
+            JsonObject jsonObject = new JsonObject();
+            product.setState("A");
+            product = productRepository.save(product);
 
-        if (product.getId() != null) {
+            if (product.getId() != null) {
 
-            jsonObject.addProperty("id", product.getId());
-            data = jsonObject.toString();
-            status = "2";
-            message = "Producto ingresado con éxito";
+                jsonObject.addProperty("id", product.getId());
+                data = jsonObject.toString();
+                status = "2";
+                message = "Producto ingresado con éxito";
 
+            } else {
+                status = "3";
+                message = "Error al ingresar producto";
+                data = jsonObject.toString();
+            }
         } else {
             status = "3";
-            message = "Error al ingresar producto";
-            data = jsonObject.toString();
+            message = "Longitud excedida en uno de los campos ingresados.";
         }
         return new String[]{status, message, data};
 
