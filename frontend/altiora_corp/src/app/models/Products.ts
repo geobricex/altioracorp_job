@@ -4,4 +4,5 @@ export interface Products {
   name: string;
   unitPrice: number;
   state: string;
+  cant: number;
 }

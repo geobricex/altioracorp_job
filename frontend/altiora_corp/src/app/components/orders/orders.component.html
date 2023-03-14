@@ -19,17 +19,21 @@
               <option selected>----</option>
               <option *ngFor="let cts of customers"
                       [ngValue]="cts"
-                      (click)=itemSelected(cts)> {{cts.name + ' ' + cts.lastname + ' - DNI: ' + cts.dni}} </option>
+                      (click)=itemSelected(cts)> {{cts.name + ' ' + cts.lastname + ' - DNI: ' + cts.dni}}
+              </option>
             </select>
           </div>
           <div class="mb-3">
             <label class="form-label">Seleccione productos</label>
-            <mat-selection-list id="selectionListId" #selectionList>
-              <mat-list-option *ngFor="let pds of products" [value]="pds">
+            <mat-selection-list id="selectionListId" [(ngModel)]="products" #selectionList>
+              <mat-list-option *ngFor="let pds of products; let i = index" [value]="pds" #myList>
                 {{pds.code}} - {{pds.name}}  - ${{pds.unitPrice}}
+                <mat-form-field>
+                  <input type="number" value="0" matInput #inputValue [name]="''+pds.id">
+                </mat-form-field>
+                <hr>
               </mat-list-option>
             </mat-selection-list>
-
             <!--            <mat-form-field>-->
             <!--              <mat-label>Selecciona varios elementos</mat-label>-->
             <!--              <mat-select multiple [(ngModel)]="selectedItems">-->

@@ -27,6 +27,11 @@
             <input type="number" class="form-control" id="ipt_unitprice" placeholder="" formControlName="unitPrice"
                    maxlength="45">
           </div>
+          <div class="mb-3">
+            <label for="ipt_cant" class="form-label">Cantidad de productos</label>
+            <input type="number" class="form-control" id="ipt_cant" placeholder="" formControlName="cant"
+                   maxlength="45">
+          </div>
         </form>
       </div>
       <div class="modal-footer">
@@ -49,6 +54,7 @@
       <th scope="col">Código</th>
       <th scope="col">Nombre</th>
       <th scope="col">Precio</th>
+      <th scope="col">Stock</th>
       <th scope="col">Acciones</th>
     </tr>
     </thead>
@@ -58,6 +64,7 @@
       <td> {{pdt.code}} </td>
       <td> {{pdt.name}} </td>
       <td> {{pdt.unitPrice}} </td>
+      <td> {{pdt.cant}} </td>
       <td>
         <button class="btn btn-warning btn-sm" style="margin-right: 1rem" data-bs-toggle="modal"
                 data-bs-target="#newProduct" (click)="updateProduct(pdt)"> Editar

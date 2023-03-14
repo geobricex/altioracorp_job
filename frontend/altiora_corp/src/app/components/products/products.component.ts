@@ -20,6 +20,8 @@ export class ProductsComponent implements OnInit {
   regFormProduct: FormGroup;
   flagnew: number = 1;
 
+  cantProduct: number = 0;
+
   constructor(private _http: HttpClient, private formBuilder: FormBuilder) {
     this.regFormProduct = this.formBuilder.group(
       {
@@ -27,6 +29,7 @@ export class ProductsComponent implements OnInit {
         code: [0, Validators.required],
         name: ["", Validators.required],
         unitPrice: [0, Validators.required],
+        cant: [0, Validators.required],
         state: 'A',
       }
     );
@@ -54,7 +57,6 @@ export class ProductsComponent implements OnInit {
 
   saveProduct() {
 
-
     if (this.regFormProduct.invalid) {
       console.log("FORMULARIO INVALIDO");
       return;
@@ -65,6 +67,7 @@ export class ProductsComponent implements OnInit {
       code: this.form['code'].value,
       name: this.form['name'].value,
       unitPrice: this.form['unitPrice'].value,
+      cant: this.form['cant'].value,
       state: 'A'
     }
 
@@ -132,6 +135,7 @@ export class ProductsComponent implements OnInit {
         id: products_.id,
         code: products_.code,
         name: products_.name,
+        cant: products_.cant,
         unitPrice: products_.unitPrice
       }
     );

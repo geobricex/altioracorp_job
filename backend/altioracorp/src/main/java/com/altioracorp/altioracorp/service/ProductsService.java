@@ -23,7 +23,8 @@ public class ProductsService {
 
     public String[] saveProducts(Product product) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
-        if (Methods.verifyMaxLength(product.getName(), 50)) {
+        if (Methods.verifyMaxLength(product.getName(), 50) &&
+                product.getCant() > 0) {
             JsonObject jsonObject = new JsonObject();
             product.setState("A");
             product = productRepository.save(product);

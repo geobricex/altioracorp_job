@@ -8,4 +8,5 @@ import java.io.Serializable;
 public class OrdersDetailDto implements Serializable {
     private Long id;
     private ProductDto products;
+    private Integer cantProduct;
 }

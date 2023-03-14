@@ -10,8 +10,9 @@ export interface Orders {
 
 export interface OrdersDetail {
   id: number;
-  orders: Orders
+  orders: Orders;
   products: Products;
+  cantProduct: number;
 }
 
 export interface Products {
@@ -20,6 +21,7 @@ export interface Products {
   name: string;
   unitPrice: number;
   state: string;
+  cant: number
 }
 
 

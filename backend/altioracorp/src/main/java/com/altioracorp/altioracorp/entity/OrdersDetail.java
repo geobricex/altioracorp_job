@@ -18,6 +18,9 @@ public class OrdersDetail {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "cant_product", nullable = false)
+    private Integer cantProduct;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "orders_id", nullable = false)
     @JsonIgnore
@@ -27,29 +30,5 @@ public class OrdersDetail {
     @JoinColumn(name = "products_id", nullable = false)
     private Product products;
 
-//
-//    public Long getId() {
-//        return id;
-//    }
-//
-//    public void setId(Long id) {
-//        this.id = id;
-//    }
-//
-//    public Order getOrders() {
-//        return orders;
-//    }
-//
-//    public void setOrders(Order orders) {
-//        this.orders = orders;
-//    }
-//
-//    public Product getProducts() {
-//        return products;
-//    }
-//
-//    public void setProducts(Product products) {
-//        this.products = products;
-//    }
 
 }

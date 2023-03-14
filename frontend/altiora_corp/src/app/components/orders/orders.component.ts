@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {Orders, OrdersDetail} from "../../models/Orders";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
@@ -15,9 +15,9 @@ import {format} from 'date-fns';
 })
 export class OrdersComponent implements OnInit {
 
-
   @ViewChild('closeModal') modalOrder: any;
   @ViewChild(MatSelectionList) selectionList: MatSelectionList;
+  @ViewChildren('inputValue') inputValues: QueryList<ElementRef>;
 
   currentDate = new Date();
   dateStr = format(this.currentDate, 'yyyy-MM-dd');
@@ -39,6 +39,7 @@ export class OrdersComponent implements OnInit {
 
   selectedOption: string;
 
+
   constructor(private _http: HttpClient, private formBuilder: FormBuilder) {
     this.regFormDetailOrder = this.formBuilder.group(
       {
@@ -50,14 +51,10 @@ export class OrdersComponent implements OnInit {
     );
   }
 
-
   ngOnInit() {
-
-    this.getCustomers();
-    this.getProducts();
-    this.getOrders();
-
+    this.getData()
   }
+
 
   get form() {
     return this.regFormOrder.controls;
@@ -101,11 +98,21 @@ export class OrdersComponent implements OnInit {
     console.log(customers_);
   }
 
+  // @ViewChildren('inputValue') inputValues: QueryList<ElementRef>;
+  // onSelectionChange(event) {
+  //   this.inputValues.forEach(input => {
+  //     const name = input.nativeElement.getAttribute('name');
+  //     const value = input.nativeElement.value;
+  //     this.inputValues[name] = value;
+  //   });
+  //   console.log(this.inputValues);
+  // }
+  valueOrder: number[] = [];
 
   prepareOrders(list: MatSelectionList) {
     let listMultiple = this.selectionList.selectedOptions.selected.map(item => item.value)
+    console.log(listMultiple);
     if (listMultiple.length > 0) {
-      console.log(this.selectedOption)
       this.regFormOrder = this.formBuilder.group(
         {
           id: 0,
@@ -123,15 +130,27 @@ export class OrdersComponent implements OnInit {
         ordersDetails: []
       }
 
+      console.log(this.inputValues);
+      this.inputValues.forEach(input => {
+        // const name = input.nativeElement.getAttribute('name');
+        let value = input.nativeElement.value;
+        console.log(value);//1 0 3
+        if (value > 0) {
+          this.valueOrder.push(Number(value));
+        }
+
+      });
+      console.log(this.valueOrder);
+
       for (let i = 0; i < listMultiple.length; i++) {
         this.ordersDetails.push(
           {
             id: 0,
             orders: this.order,
-            products: listMultiple[i]
+            products: listMultiple[i],
+            cantProduct: this.valueOrder[i]
           }
         );
-
       }
 
       // @ts-ignore
@@ -158,6 +177,7 @@ export class OrdersComponent implements OnInit {
     list.deselectAll();
     this.selectedOption = '----';
   }
+
 
   saveOrderApi(order_: Orders, orderDetail_: OrdersDetail[]): Observable<any> {
     this.globalUri = "http://localhost:8888/altioracorp/orders/insertorders";
@@ -211,7 +231,9 @@ export class OrdersComponent implements OnInit {
     console.log(order_);
     let allProducts = "";
     for (let i = 0; i < order_.ordersDetails.length; i++) {
-      allProducts += order_.ordersDetails[i].products.code + '-' + order_.ordersDetails[i].products.name + ' / ';
+      console.log(order_.ordersDetails[i]);
+      allProducts += order_.ordersDetails[i].products.code + '-' + order_.ordersDetails[i].products.name
+        + '-' + order_.ordersDetails[i].cantProduct + ' / ';
     }
 
     this.regFormDetailOrder = this.formBuilder.group(
@@ -223,5 +245,11 @@ export class OrdersComponent implements OnInit {
       }
     );
   }
+  getData() {
+    this.getOrders();
+    this.getCustomers();
+    this.getProducts();
+    this.getOrders();
 
+  }
 }

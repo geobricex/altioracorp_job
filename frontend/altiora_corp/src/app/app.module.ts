@@ -13,6 +13,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
 import {MatListModule} from '@angular/material/list';
 import {MatSelectModule} from '@angular/material/select';
+import {MatInputModule} from "@angular/material/input";
+import {MatCheckboxModule} from "@angular/material/checkbox";
 
 
 @NgModule({
@@ -23,18 +25,20 @@ import {MatSelectModule} from '@angular/material/select';
     ProductsComponent,
     MenuComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    ReactiveFormsModule,
-    NgMultiSelectDropDownModule.forRoot(),
-    MatListModule,
-    MatSelectModule,
-    FormsModule
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        ReactiveFormsModule,
+        NgMultiSelectDropDownModule.forRoot(),
+        MatListModule,
+        MatSelectModule,
+        FormsModule,
+        MatInputModule,
+        MatCheckboxModule
 
 
-  ],
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

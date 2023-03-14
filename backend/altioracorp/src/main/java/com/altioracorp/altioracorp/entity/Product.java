@@ -35,6 +35,9 @@ public class Product {
     @Column(name = "unit_price", nullable = false)
     private BigDecimal unitPrice;
 
+    @Column(name = "cant", nullable = false)
+    private Integer cant;
+
     @Column(name = "state", nullable = false, length = 2)
     private String state;
 

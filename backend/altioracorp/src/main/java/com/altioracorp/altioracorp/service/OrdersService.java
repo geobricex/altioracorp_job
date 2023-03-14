@@ -7,6 +7,7 @@ import com.altioracorp.altioracorp.entity.OrdersDetail;
 import com.altioracorp.altioracorp.entity.Product;
 import com.altioracorp.altioracorp.repository.OrderRepository;
 import com.altioracorp.altioracorp.repository.OrdersDetailRepository;
+import com.altioracorp.altioracorp.repository.ProductRepository;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import util.Methods;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -27,6 +29,9 @@ import java.util.stream.Collectors;
 public class OrdersService {
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
     @Autowired
     private OrdersDetailRepository ordersDetailRepository;
 
@@ -43,6 +48,7 @@ public class OrdersService {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
         Order order = new Order();
         OrdersDetail ordersDetail = new OrdersDetail();
+        Product product = new Product();
 
         JsonObject jso = Methods.stringToJSON(orderFinal);
 
@@ -66,19 +72,40 @@ public class OrdersService {
 
             for (int i = 0; i < OrdersDetailsdata.size(); i++) {
                 ordersDetail = new OrdersDetail();
+                product = new Product();
 
                 JsonObject jsonObject = OrdersDetailsdata.get(i).getAsJsonObject();
-                int id_od = Methods.JsonToInteger(jsonObject.getAsJsonObject("products"), "id", 0);
+                int cantProduct = Methods.JsonToInteger(jsonObject, "cantProduct", 0);
 
-                ordersDetail.setProducts(new Product(id_od));
-                ordersDetail.setOrders(order);
+                int id_pdt = Methods.JsonToInteger(jsonObject.getAsJsonObject("products"), "id", 0);
+                int cant = Methods.JsonToInteger(jsonObject.getAsJsonObject("products"), "cant", 0);
+                int code = Methods.JsonToInteger(jsonObject.getAsJsonObject("products"), "code", 0);
+                String name = Methods.JsonToString(jsonObject.getAsJsonObject("products"), "name", "");
+                String unitPrice = Methods.JsonToString(jsonObject.getAsJsonObject("products"), "unitPrice", "");
 
-                ordersDetail = ordersDetailRepository.save(ordersDetail);
+                if (cantProduct <= cant) {
+                    ordersDetail.setProducts(new Product(id_pdt));
+                    ordersDetail.setOrders(order);
+                    ordersDetail.setCantProduct(cantProduct);
+                    ordersDetail = ordersDetailRepository.save(ordersDetail);
+
+                    product.setId(id_pdt);
+                    product.setCant(cant - ordersDetail.getCantProduct());
+                    product.setCode(code);
+                    product.setName(name);
+                    product.setState("A");
+                    product.setUnitPrice(new BigDecimal(unitPrice));
+
+                    product = productRepository.save(product);
+
+                    data = order.getId().toString();
+                    status = "2";
+                    message = "Orden ingresado con éxito";
+                } else {
+                    status = "3";
+                    message = "No se cuenta con la cantidad de productos requerida";
+                }
             }
-
-            data = order.getId().toString();
-            status = "2";
-            message = "Orden ingresado con éxito";
 
         } else {
             status = "3";
